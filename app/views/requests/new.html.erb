@@ -14,5 +14,6 @@
 
   <%= render partial: "support/collaborators", locals: { f: f } %>
 
-  <%= f.action :submit, label: "Submit", button_html: { class: "btn btn-success" } %>
+  <%= f.action :submit, label: "Submit", button_html: { class: "btn btn-success", data: { disable_with: "Ticket is being sent" } } %>
+
 <% end %>
