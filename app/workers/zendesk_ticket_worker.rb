@@ -5,7 +5,11 @@ class ZendeskTicketWorker
     if GDS_ZENDESK_CLIENT.users.suspended?(ticket_options["requester"]["email"])
       $statsd.increment("#{::STATSD_PREFIX}.report_a_problem.submission_from_suspended_user")
     else
-      create_ticket(ticket_options) rescue ZendeskAPI::Error::NetworkError
+      begin
+        create_ticket(ticket_options)
+      rescue ZendeskAPI::Error::NetworkError => e
+        raise unless e.response.status == 409
+      end
     end
   end
 
